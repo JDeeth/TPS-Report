@@ -1,6 +1,9 @@
 #pragma once
 
+#include <QAbstractTableModel>
 #include <QMainWindow>
+
+#include "phonerecords.h"
 
 namespace Ui {
 class MainWindow;
@@ -16,6 +19,10 @@ public:
 private:
   Ui::MainWindow* ui;
 
+  PhoneRecords phones;
+
 private slots:
-  void LoadRE();
+  void on_LoadREPhones_clicked();
+  void on_LoadTPS_clicked();
+  void on_MakeImportData_clicked();
 };

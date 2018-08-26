@@ -24,10 +24,12 @@ CONFIG += c++14
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    phonerecords.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    phonerecords.h
 
 FORMS += \
         mainwindow.ui
@@ -36,3 +38,7 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    ../sample_data/re_phones.csv \
+    ../sample_data/tps_nospace_short.txt
