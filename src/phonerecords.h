@@ -4,9 +4,12 @@
 #include <QMainWindow>
 #include <QStatusBar>
 
+#include "tpslist.h"
+
 class PhoneRecords : public QAbstractTableModel {
 public:
   void load(QMainWindow* window, QStatusBar* sb);
+  void check(const TPSList& tps, QStatusBar* sb);
   virtual int rowCount(const QModelIndex& parent) const override;
   virtual int columnCount(const QModelIndex& parent) const override;
   virtual QVariant data(const QModelIndex& index, int role) const override;
@@ -23,6 +26,7 @@ private:
     std::string name;
     std::string raw_number;
     std::string clean_number;
+    bool clean{false};
     TPSMatch tps_match{TPSMatch::NotChecked};
   };
 

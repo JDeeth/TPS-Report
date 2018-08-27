@@ -21,16 +21,23 @@ MainWindow::~MainWindow() {
   delete ui;
 }
 
-void MainWindow::on_LoadREPhones_clicked() {
-  phones.load(this, ui->statusBar);
+void MainWindow::reset_tableview() {
   // this is not the right way to do this
   ui->PhoneTable->setModel(nullptr);
   ui->PhoneTable->setModel(&phones);
   ui->PhoneTable->resizeColumnsToContents();
 }
 
+void MainWindow::on_LoadREPhones_clicked() {
+  phones.load(this, ui->statusBar);
+  phones.check(tps, ui->statusBar);
+  reset_tableview();
+}
+
 void MainWindow::on_LoadTPS_clicked() {
   tps.load(this, ui->statusBar);
+  phones.check(tps, ui->statusBar);
+  reset_tableview();
 }
 
 void MainWindow::on_MakeImportData_clicked() {

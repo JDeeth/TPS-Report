@@ -19,10 +19,6 @@ void TPSList::load(QMainWindow* window, QStatusBar* sb) {
       return;
     }
 
-    auto sb_update = [sb](const std::string& msg) {
-      sb->showMessage(QString::fromStdString(msg));
-    };
-
     list.clear();
 
     std::stringstream s;
@@ -34,15 +30,24 @@ void TPSList::load(QMainWindow* window, QStatusBar* sb) {
     while (std::getline(f, line)) {
       ++lines;
       if (lines % 100000 == 0) {
-        s << "Reading TPS row " << lines;
-        sb_update(s.str());
+        s << lines << " TPS phone numbers imported";
+        sb->showMessage(QString::fromStdString(s.str()));
         s.str("");
       }
       list.emplace_back(std::regex_replace(line, std::regex(" "), ""));
     }
-    s << list.size() << " TPS phone numbers imported";
-    sb_update(s.str());
 
     f.close();
   }
+}
+
+bool TPSList::matched(const std::string& str) const {
+  for (const auto& tps : list)
+    if (str == tps)
+      return true;
+  return false;
+}
+
+size_t TPSList::size() const {
+  return list.size();
 }

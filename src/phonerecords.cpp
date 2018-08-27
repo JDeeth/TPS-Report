@@ -9,7 +9,7 @@
 
 #include "csv-parser/parser.hpp"
 
-std::string CleanNumber(std::string number) {
+std::pair<std::string, bool> CleanNumber(std::string number) {
   // remove (0)
   number = std::regex_replace(number, std::regex("\\(0\\)"), "");
 
@@ -24,17 +24,17 @@ std::string CleanNumber(std::string number) {
 
   // if first two digits are 00, discard
   if (std::regex_search(number, std::regex("^00")))
-    return "Begins 00";
+    return std::make_pair("Begins 00", false);
 
   // if first digit isn't 0, discard
   if (!std::regex_search(number, std::regex("^0")))
-    return "Doesn't begin 0";
+    return std::make_pair("Doesn't begin 0", false);
 
   // if not exactly 11 digits, discard
   if (number.length() != 11)
-    return "Wrong length";
+    return std::make_pair("Wrong length", false);
 
-  return number;
+  return std::make_pair(number, true);
 }
 
 void PhoneRecords::load(QMainWindow* window, QStatusBar* sb) {
@@ -63,7 +63,8 @@ void PhoneRecords::load(QMainWindow* window, QStatusBar* sb) {
       auto raw_number = (*row)[2];
       auto clean_number = CleanNumber(raw_number);
 
-      records.emplace_back(Record{id, name, raw_number, clean_number});
+      records.emplace_back(Record{
+          id, name, raw_number, clean_number.first, clean_number.second});
     }
     // emit dataChanged ought to happen here
 
@@ -77,12 +78,44 @@ void PhoneRecords::load(QMainWindow* window, QStatusBar* sb) {
   }
 }
 
+void PhoneRecords::check(const TPSList& tps, QStatusBar* sb) {
+  if (tps.size() == 0)
+    return;
+
+  int checked{0};
+  int matched{0};
+
+  std::stringstream s;
+  s.imbue(std::locale(""));
+  auto update = [&] {
+    s.str("");
+    s << checked << " numbers checked; " << matched << " numbers matched";
+    sb->showMessage(QString::fromStdString(s.str()));
+  };
+
+  for (auto& record : records) {
+    if (record.clean) {
+      if (tps.matched(record.clean_number)) {
+        record.tps_match = TPSMatch::Matched;
+        ++matched;
+        update();
+      } else {
+        record.tps_match = TPSMatch::NoMatch;
+        if (checked % 100 == 0)
+          update();
+      }
+      ++checked;
+    }
+  }
+  update();
+}
+
 int PhoneRecords::rowCount(const QModelIndex&) const {
   return static_cast<int>(records.size());
 }
 
 int PhoneRecords::columnCount(const QModelIndex&) const {
-  return 5;
+  return 6;
 }
 
 QVariant PhoneRecords::data(const QModelIndex& index, int role) const {
@@ -101,8 +134,10 @@ QVariant PhoneRecords::data(const QModelIndex& index, int role) const {
     case 2:
       return QString::fromStdString(row.raw_number);
     case 3:
-      return QString::fromStdString(row.clean_number);
+      return row.clean ? "Yes" : "No";
     case 4:
+      return QString::fromStdString(row.clean_number);
+    case 5:
       return TPSToStr(row.tps_match);
 
     default:
@@ -121,14 +156,16 @@ QVariant PhoneRecords::headerData(int section,
 
   switch (section) {
     case 0:
-      return "Constituent ID";
+      return "Cn. ID";
     case 1:
       return "Constituent Name";
     case 2:
       return "RE phone number";
     case 3:
-      return "Clean phone number";
+      return "Clean?";
     case 4:
+      return "Cleaned number";
+    case 5:
       return "TPS match?";
     default:
       return "?";
