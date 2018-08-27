@@ -1,7 +1,10 @@
 #include "phonerecords.h"
 
+#include <locale>
 #include <regex>
+#include <sstream>
 
+#include <QFileDialog>
 #include <QMessageBox>
 
 #include "csv-parser/parser.hpp"
@@ -34,11 +37,14 @@ std::string CleanNumber(std::string number) {
   return number;
 }
 
-void PhoneRecords::load(QMainWindow* ptr, const QString& filename) {
+void PhoneRecords::load(QMainWindow* window, QStatusBar* sb) {
+  QString filename = QFileDialog::getOpenFileName(
+      window, "Load RE phones", "", "Text/CSV files (*.txt *.csv);;Any (*)");
+
   if (!filename.isEmpty()) {
     std::ifstream f(filename.toStdString());
     if (!f.is_open()) {
-      QMessageBox::critical(ptr, "Error", "Could not open file");
+      QMessageBox::critical(window, "Error", "Could not open file");
       return;
     }
 
@@ -60,6 +66,14 @@ void PhoneRecords::load(QMainWindow* ptr, const QString& filename) {
       records.emplace_back(Record{id, name, raw_number, clean_number});
     }
     // emit dataChanged ought to happen here
+
+    std::stringstream s;
+    s.imbue(std::locale(""));
+    s << records.size() << " RE phone numbers imported";
+
+    sb->showMessage(QString::fromStdString(s.str()));
+
+    f.close();
   }
 }
 

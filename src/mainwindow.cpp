@@ -22,22 +22,15 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::on_LoadREPhones_clicked() {
-  QString filename = QFileDialog::getOpenFileName(
-      this, "Load RE phones", "", "Text/CSV files (*.txt *.csv);;Any (*)");
-
-  phones.load(this, filename);
+  phones.load(this, ui->statusBar);
   // this is not the right way to do this
   ui->PhoneTable->setModel(nullptr);
   ui->PhoneTable->setModel(&phones);
   ui->PhoneTable->resizeColumnsToContents();
-
-  ui->statusBar->showMessage(
-      QString::fromStdString(std::to_string(phones.rowCount(QModelIndex())) +
-                             " phone numbers loaded"));
 }
 
 void MainWindow::on_LoadTPS_clicked() {
-  ui->statusBar->showMessage("Load TPS list");
+  tps.load(this, ui->statusBar);
 }
 
 void MainWindow::on_MakeImportData_clicked() {

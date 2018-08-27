@@ -2,10 +2,11 @@
 
 #include <QAbstractTableModel>
 #include <QMainWindow>
+#include <QStatusBar>
 
 class PhoneRecords : public QAbstractTableModel {
 public:
-  void load(QMainWindow* ptr, const QString& filename);
+  void load(QMainWindow* window, QStatusBar* sb);
   virtual int rowCount(const QModelIndex& parent) const override;
   virtual int columnCount(const QModelIndex& parent) const override;
   virtual QVariant data(const QModelIndex& index, int role) const override;

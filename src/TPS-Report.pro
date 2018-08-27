@@ -25,11 +25,13 @@ CONFIG += c++14
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    phonerecords.cpp
+    phonerecords.cpp \
+    tpslist.cpp
 
 HEADERS += \
         mainwindow.h \
-    phonerecords.h
+    phonerecords.h \
+    tpslist.h
 
 FORMS += \
         mainwindow.ui

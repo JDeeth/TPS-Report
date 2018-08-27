@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "phonerecords.h"
+#include "tpslist.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +21,7 @@ private:
   Ui::MainWindow* ui;
 
   PhoneRecords phones;
+  TPSList tps;
 
 private slots:
   void on_LoadREPhones_clicked();
