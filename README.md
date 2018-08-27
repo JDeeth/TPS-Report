@@ -1,8 +1,10 @@
 # TPS-Report
 
-This is an application to assist administrators of Blackbaud's The Raiser's Edge fundraising CRM system to comply with Ofcom's Telephone Preference Service.
+This is a simple one-page application to assist administrators of Blackbaud's The Raiser's Edge fundraising CRM system to comply with Ofcom's Telephone Preference Service.
 
 It compares a .csv export of the phone numbers in Raiser's Edge with the TPS list (not included), and creates a .csv file to record a new Attribute on every constituent record with a matching phone number. You can choose what that attribute should look like, although sensible defaults are provided.
+
+![screenshot](screenshot.png)
 
 Usage
 -----
