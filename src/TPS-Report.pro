@@ -26,12 +26,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     phonerecords.cpp \
-    tpslist.cpp
+    tpslist.cpp \
+    attribute.cpp
 
 HEADERS += \
         mainwindow.h \
     phonerecords.h \
-    tpslist.h
+    tpslist.h \
+    attribute.h
 
 FORMS += \
         mainwindow.ui
@@ -43,4 +45,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     ../sample_data/re_phones.csv \
-    ../sample_data/tps_nospace_short.txt
+    ../sample_data/tps_nospace_short.txt \
+    ../README.md \
+    ../LICENSE

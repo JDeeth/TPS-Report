@@ -110,6 +110,41 @@ void PhoneRecords::check(const TPSList& tps, QStatusBar* sb) {
   update();
 }
 
+void PhoneRecords::create_import(QMainWindow* window,
+                                 QStatusBar* sb,
+                                 const Attribute& attr) {
+  QString filename = QFileDialog::getSaveFileName(
+      window,
+      "Create import data",
+      "",
+      "Text/Import files (*.txt *.csv *.imp);;All files (*)");
+
+  if (!filename.isEmpty()) {
+    std::ofstream f(filename.toStdString());
+    if (!f.is_open()) {
+      QMessageBox::critical(window, "Error", "Could not create file");
+    } else {
+      f << R"("ConsID","CAttrCat","CAttrDesc","CAttrDate","CAttrCom")" << '\n';
+
+      auto sep{R"(",")"};
+      QString attr_data{sep + attr.category + sep + attr.desc + sep +
+                        attr.date + sep + attr.comment + "\"\n"};
+
+      int exported{0};
+      for (auto r : records) {
+        if (r.tps_match == TPSMatch::Matched) {
+          f << "\"" << r.id << attr_data.toStdString();
+          ++exported;
+          sb->showMessage(QString::fromStdString(std::to_string(exported) +
+                                                 " rows created"));
+        }
+      }
+
+      f.close();
+    }
+  }
+}
+
 int PhoneRecords::rowCount(const QModelIndex&) const {
   return static_cast<int>(records.size());
 }

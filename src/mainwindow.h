@@ -23,7 +23,7 @@ private:
   PhoneRecords phones;
   TPSList tps;
 
-  void reset_tableview();
+  void reset_phonetableview();
 
 private slots:
   void on_LoadREPhones_clicked();

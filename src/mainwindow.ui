@@ -34,41 +34,55 @@
       <item>
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>TPS Match attribute configuration:</string>
+         <string>Attribute configuration to record TPS matches:</string>
         </property>
        </widget>
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="2">
-         <widget class="QLineEdit" name="AttrName"/>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="AttrDescription"/>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Attribute value</string>
+           <string>Comment</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Attribute name</string>
+           <string>Category</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Description</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Attribute comment</string>
+           <string>Date</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
+        <item row="4" column="1">
          <widget class="QLineEdit" name="AttrComment"/>
         </item>
-        <item row="1" column="2">
-         <widget class="QLineEdit" name="AttrValue"/>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="AttrCategory"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDateEdit" name="AttrDate">
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

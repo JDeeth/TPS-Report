@@ -4,12 +4,17 @@
 #include <QMainWindow>
 #include <QStatusBar>
 
+#include "attribute.h"
 #include "tpslist.h"
 
 class PhoneRecords : public QAbstractTableModel {
 public:
   void load(QMainWindow* window, QStatusBar* sb);
   void check(const TPSList& tps, QStatusBar* sb);
+  void create_import(QMainWindow* window,
+                     QStatusBar* sb,
+                     const Attribute& attr);
+
   virtual int rowCount(const QModelIndex& parent) const override;
   virtual int columnCount(const QModelIndex& parent) const override;
   virtual QVariant data(const QModelIndex& index, int role) const override;

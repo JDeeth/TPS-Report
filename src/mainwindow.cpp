@@ -4,24 +4,27 @@
 #include <QDate>
 #include <QtWidgets>
 
+#include "attribute.h"
+
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
-  ui->AttrName->setText(QString("TPSMatch"));
-  auto date = QDate::currentDate().toString("yyyy-MM-dd");
-  ui->AttrValue->setText(date);
-  ui->AttrComment->setText("Matched in bulk by TPSReport on " + date);
+  setWindowTitle("TPS Report");
 
-  ui->PhoneTable->setModel(&phones);
-  ui->PhoneTable->resizeColumnsToContents();
+  ui->AttrCategory->setText("TPS Subscriber");
+  ui->AttrDescription->setText("True");
+  ui->AttrDate->setDate(QDate::currentDate());
+  ui->AttrComment->setText("Changed in bulk by TPSReport");
+
+  reset_phonetableview();
 }
 
 MainWindow::~MainWindow() {
   delete ui;
 }
 
-void MainWindow::reset_tableview() {
+void MainWindow::reset_phonetableview() {
   // this is not the right way to do this
   ui->PhoneTable->setModel(nullptr);
   ui->PhoneTable->setModel(&phones);
@@ -31,15 +34,20 @@ void MainWindow::reset_tableview() {
 void MainWindow::on_LoadREPhones_clicked() {
   phones.load(this, ui->statusBar);
   phones.check(tps, ui->statusBar);
-  reset_tableview();
+  reset_phonetableview();
 }
 
 void MainWindow::on_LoadTPS_clicked() {
   tps.load(this, ui->statusBar);
   phones.check(tps, ui->statusBar);
-  reset_tableview();
+  reset_phonetableview();
 }
 
 void MainWindow::on_MakeImportData_clicked() {
-  ui->statusBar->showMessage("Create attribute import data");
+  Attribute attr;
+  attr.category = ui->AttrCategory->text();
+  attr.desc = ui->AttrDescription->text();
+  attr.date = ui->AttrDate->date().toString("yyyy-MM-dd");
+  attr.comment = ui->AttrComment->text();
+  phones.create_import(this, ui->statusBar, attr);
 }
