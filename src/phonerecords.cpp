@@ -1,8 +1,38 @@
 #include "phonerecords.h"
 
+#include <regex>
+
 #include <QMessageBox>
 
 #include "csv-parser/parser.hpp"
+
+std::string CleanNumber(std::string number) {
+  // remove (0)
+  number = std::regex_replace(number, std::regex("\\(0\\)"), "");
+
+  // remove spaces and hyphens
+  number = std::regex_replace(number, std::regex("[ -]"), "");
+
+  // replace initial +44 with 0
+  number = std::regex_replace(number, std::regex("^\\+44"), "0");
+
+  // remove non-numeric characters
+  number = std::regex_replace(number, std::regex("\\D"), "");
+
+  // if first two digits are 00, discard
+  if (std::regex_search(number, std::regex("^00")))
+    return "Begins 00";
+
+  // if first digit isn't 0, discard
+  if (!std::regex_search(number, std::regex("^0")))
+    return "Doesn't begin 0";
+
+  // if not exactly 11 digits, discard
+  if (number.length() != 11)
+    return "Wrong length";
+
+  return number;
+}
 
 void PhoneRecords::load(QMainWindow* ptr, const QString& filename) {
   if (!filename.isEmpty()) {
@@ -25,7 +55,7 @@ void PhoneRecords::load(QMainWindow* ptr, const QString& filename) {
       auto id = (*row)[0];
       auto name = (*row)[1];
       auto raw_number = (*row)[2];
-      auto clean_number = "";
+      auto clean_number = CleanNumber(raw_number);
 
       records.emplace_back(Record{id, name, raw_number, clean_number});
     }
