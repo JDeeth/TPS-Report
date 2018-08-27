@@ -63,8 +63,8 @@ void PhoneRecords::load(QMainWindow* window, QStatusBar* sb) {
       auto raw_number = (*row)[2];
       auto clean_number = CleanNumber(raw_number);
 
-      records.emplace_back(Record{
-          id, name, raw_number, clean_number.first, clean_number.second});
+      records.emplace_back(Record(
+          id, name, raw_number, clean_number.first, clean_number.second));
     }
     // emit dataChanged ought to happen here
 
@@ -217,3 +217,14 @@ QString PhoneRecords::TPSToStr(PhoneRecords::TPSMatch m) const {
       return "Matched";
   }
 }
+
+PhoneRecords::Record::Record(std::string id,
+                             std::string name,
+                             std::string raw_number,
+                             std::string clean_number,
+                             bool clean)
+    : id{id},
+      name{name},
+      raw_number{raw_number},
+      clean_number{clean_number},
+      clean{clean} {}

@@ -10,7 +10,10 @@
 
 void TPSList::load(QMainWindow* window, QStatusBar* sb) {
   QString filename = QFileDialog::getOpenFileName(
-      window, "Load TPS list", "", "Text/CSV files (*.txt *.csv);;Any (*)");
+      window,
+      "Load TPS list",
+      "",
+      "Text/CSV files (*.txt *.csv *.dat);;Any (*)");
 
   if (!filename.isEmpty()) {
     std::ifstream f(filename.toStdString());

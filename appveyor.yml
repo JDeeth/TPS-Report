@@ -1,0 +1,20 @@
+image:
+- Visual Studio 2015
+
+environment:
+  matrix:
+  - QT5: C:\Qt\5.11.1\msvc2015_64
+
+configuration: Release
+
+before_build:
+- git submodule update --init --recursive
+- set PATH=%PATH%;%QT5%\bin;%QT5%
+- call "%QT5%\bin\qtenv2.bat"
+- call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+- call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
+- set SPEC="win32-msvc"
+
+build_script:
+- qmake -v && qmake C:\projects\tps-report\src\TPS-Report.pro
+- nmake

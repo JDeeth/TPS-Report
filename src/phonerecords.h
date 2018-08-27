@@ -27,6 +27,11 @@ private:
   QString TPSToStr(TPSMatch m) const;
 
   struct Record {
+    Record(std::string id,
+           std::string name,
+           std::string raw_number,
+           std::string clean_number,
+           bool clean);
     std::string id;
     std::string name;
     std::string raw_number;
