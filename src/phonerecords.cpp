@@ -128,12 +128,16 @@ void PhoneRecords::create_import(QMainWindow* window,
 
       auto sep{R"(",")"};
       QString attr_data{sep + attr.category + sep + attr.desc + sep +
-                        attr.date + sep + attr.comment + "\"\n"};
+                        attr.date + sep};
 
       int exported{0};
       for (auto r : records) {
         if (r.tps_match == TPSMatch::Matched) {
-          f << "\"" << r.id << attr_data.toStdString();
+          auto comment = std::regex_replace(
+              attr.comment.toStdString(), std::regex("%RAW"), r.raw_number);
+          comment =
+              std::regex_replace(comment, std::regex("%CLEAN"), r.clean_number);
+          f << "\"" << r.id << attr_data.toStdString() << comment << "\"\n";
           ++exported;
           sb->showMessage(QString::fromStdString(std::to_string(exported) +
                                                  " rows created"));

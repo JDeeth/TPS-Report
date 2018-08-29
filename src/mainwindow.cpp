@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget* parent)
   ui->AttrCategory->setText("TPS Subscriber");
   ui->AttrDescription->setText("True");
   ui->AttrDate->setDate(QDate::currentDate());
-  ui->AttrComment->setText("Changed in bulk by TPSReport");
+  ui->AttrComment->setText("Matched by TPSReport on %RAW");
 
   reset_phonetableview();
 }

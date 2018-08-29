@@ -14,9 +14,34 @@ Usage
 3. Click the "Load RE phone numbers" button and load that .csv file. You should see the data appear in the correct columns in the lower half of the window, along with TPS Report's attempt to put them into a consistent 'clean' format to compare with the TPS list.
 4. Click the "Load TPS list" button and select the file you'll have purchased from Ofcom. (It expects a text file, so you might need to unzip it first.) This step will take a while; it updates the status bar as the file is loaded.
 5. Whenever both files are loaded, it will immediately check each RE phone number against the TPS list (again providing updates on the status bar). The "TPS Match?" column will change from "Not Checked" to "No Match" and "Matched".
-6. Click "Create attribute import data", and save the import data as a new file.
-7. In RE, Import a Constituent Attribute using this file.
-8. (To do: create a cover sheet of some kind)
+6. Alter the attribute configuration if needed. You can use the %RAW and %CLEAN flags to put the raw (as in, as recorded in RE) or cleaned-up versions of the phone number into the attribute comment.
+7. Click "Create attribute import data", and save the import data as a new file.
+8. In RE, Import a Constituent Attribute using this file.
+
+Input data
+----------
+
+RE phone numbers must have these three columns in this order:
+
+    "Constituent ID","Constituent Name","Phone Number"
+    "123","Milton Waddams","07700123123"
+    "234","Bill Lumbergh","01225 555 555"
+
+Headers are optional, but if used, the first column must be labelled "Constituent ID".
+
+TPS data: as provided by Ofcom.
+
+    01225555555
+    07742000000
+    02089999999
+
+or
+
+    01225 555555
+    07742 000000
+    0208 9999999
+
+The version of the TPS data which shows changes to the list with an `A` or `D` is currently not supported.
 
 Notes and caveats
 -----------------
@@ -35,7 +60,7 @@ As the phone numbers in RE are unlikely to match the format of those in the TPS 
  - discard numbers not starting with 0
  - discard numbers with more or less than 11 digits
 
- The discarded numbers are assumed to be non-UK or misformed numbers and are excluded from the check.
+The discarded numbers are assumed to be non-UK or misformed numbers and are excluded from the check.
 
 It would probably be useful to filter/sort/extract the processed phone numbers at this point for analysis, error checking etc. This can be done after an hour or so of tinkering.
 
